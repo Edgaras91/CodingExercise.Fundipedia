@@ -1,0 +1,76 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<form method="get" action="https://localhost:7187/Orders/status" onsubmit="submitForm(event)">
+    <table>
+        <tr>
+            <td>
+                <label for="isRushOrder">Is Rush Order:</label>
+            </td>
+            <td>
+                <input type="checkbox" id="isRushOrder" name="isRushOrder"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="orderType">Order Type:</label>
+            </td>
+            <td>
+                <select id="orderType" name="orderType">
+                    <option value="Repair">Repair</option>
+                    <option value="Hire">Hire</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="isNewCustomer">Is New Customer:</label>
+            </td>
+            <td>
+                <input type="checkbox" id="isNewCustomer" name="isNewCustomer"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="isLargeOrder">Is Large Order:</label>
+            </td>
+            <td>
+                <input type="checkbox" id="isLargeOrder" name="isLargeOrder"/>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit">Submit</button>
+</form>
+
+<label id="orderStatusLabel">Order Status: Unknown</label>
+
+<script>
+    function submitForm(event) {
+        event.preventDefault();
+        const orderStatusLabel = document.getElementById("orderStatusLabel");
+        orderStatusLabel.textContent = `Order Status: Loading...`;
+        console.log("Submitting form...");
+        // Get form values
+        const isRushOrder = document.getElementById("isRushOrder").checked;
+        const orderType = document.getElementById("orderType").value;
+        const isNewCustomer = document.getElementById("isNewCustomer").checked;
+        const isLargeOrder = document.getElementById("isLargeOrder").checked;
+        
+        // Make API call with form values
+        fetch(`https://localhost:7187/Orders/status?isRushOrder=${isRushOrder}&orderType=${orderType}&isNewCustomer=${isNewCustomer}&isLargeOrder=${isLargeOrder}`)
+            .then(response => response.text())
+            .then(data => {
+                // Update orderStatusLabel with response data
+                
+                console.log(data);
+                orderStatusLabel.textContent = `Order Status: ${data}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    }
+</script>

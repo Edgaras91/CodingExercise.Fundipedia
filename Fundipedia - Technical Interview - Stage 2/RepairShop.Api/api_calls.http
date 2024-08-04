@@ -1,0 +1,14 @@
+###1 Large repair orders for new customers should be closed
+GET https://localhost:7187/Orders/status?OrderType=Repair&IsNewCustomer=true&IsLargeOrder=true
+
+###2 Large rush hire orders should always be closed
+GET https://localhost:7187/orders/status?IsRushOrder=true&OrderType=Hire&IsNewCustomer=false&IsLargeOrder=true
+
+###3 Large repair orders always require authorisation
+GET https://localhost:7187/orders/status?IsRushOrder=false&OrderType=Repair&IsLargeOrder=true
+
+###4 All rush orders for new customers always require authorisation
+GET https://localhost:7187/orders/status?IsRushOrder=true&IsNewCustomer=true
+
+###5 All other orders should be confirmed
+GET https://localhost:7187/orders/status?IsRushOrder=true&OrderType=Repair&IsNewCustomer=true&IsLargeOrder=true
