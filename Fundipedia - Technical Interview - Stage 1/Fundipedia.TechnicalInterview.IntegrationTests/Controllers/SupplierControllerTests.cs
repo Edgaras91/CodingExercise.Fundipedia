@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using Fundipedia.TechnicalInterview.Api.Models.Requests;
 using Fundipedia.TechnicalInterview.Api.Models.Response;
+using Fundipedia.TechnicalInterview.Data.Context;
 using Fundipedia.TechnicalInterview.Domain;
 using Fundipedia.TechnicalInterview.Mappers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
-using System.Net.Http;
 
 namespace Fundipedia.TechnicalInterview.IntegrationTests.Controllers
 {
@@ -18,6 +18,19 @@ namespace Fundipedia.TechnicalInterview.IntegrationTests.Controllers
         public SupplierControllerTests()
         {
             _webApplicationFactory = new WebApplicationFactory<Program>();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            var scope = _webApplicationFactory.Services.CreateScope();
+            var supplierContext = scope.ServiceProvider.GetRequiredService<SupplierContext>();
+            foreach (var supplierContextSupplier in supplierContext.Suppliers)
+            {
+                supplierContext.Suppliers.Remove(supplierContextSupplier);
+            }
+
+            supplierContext.SaveChanges();
         }
 
         [Test]

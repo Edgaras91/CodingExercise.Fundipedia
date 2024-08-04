@@ -5,7 +5,7 @@ namespace Fundipedia.TechnicalInterview.Api.Models.Tests
 {
     public class SupplierExtensionsTests
     {
-        [SetUp]
+        [Test]
         public void IsActiveWithValidActivationDateShouldReturnTrue()
         {
             var supplier = new Supplier { ActivationDate = DateTime.UtcNow.AddDays(2) };
